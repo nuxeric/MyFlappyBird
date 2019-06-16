@@ -7,13 +7,13 @@ import java.io.IOException;
 public class Pipe extends AbstractGameObject {
 
 
-    //     EFFECTS: scale the AbstractPipe to the given initialWidth, and given initialHeight, and with correct orientation
+    //EFFECTS: scale the Pipe to the given initialWidth, and given initialHeight, and with correct orientation
     public Pipe(int width, int height, boolean orientation ) {
         Image image = null;
         if (orientation) {
-            // this is north!!
+            // this is up!!
             try {
-                image = ImageIO.read(getClass().getResource("/resources/images/PipeDown.png"));
+                image = ImageIO.read(getClass().getResource("/resources/images/PipeUp.png"));
             } catch (IOException e) {
                 System.out.println("Image didn't load properly for PipeDown");
                 e.printStackTrace();

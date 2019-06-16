@@ -18,6 +18,4 @@ public abstract class AbstractGameObject {
         return gameObjectImage;
     }
 
-    public Image getImageBoundaries() {
-    }
 }

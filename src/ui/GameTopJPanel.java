@@ -1,6 +1,7 @@
 package ui;
 
 import model.Bird;
+import model.Pipe;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -55,6 +56,9 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         //Reset our graphics object so we can draw with it again.
         g2d.setTransform(backup);
         g2d.drawImage(game.getGround().getGameObjectImage(), game.getGround().getxLoc(), game.getGround().getyLoc(), null);
+        for (Pipe p : game.getPipeArray()) {
+            g2d.drawImage(p.getGameObjectImage(),p.getxLoc(),p.getyLoc(),null);
+        }
     }
 
     private void handleBirdRotationForDrawing(Graphics2D g2d) {
