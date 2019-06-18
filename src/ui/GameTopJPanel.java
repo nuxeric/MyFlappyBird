@@ -19,10 +19,12 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
     private Image backGroundImage;
     private Game game;
 
+    private static final int TIMER_SPEED = 20;
+
 
     GameTopJPanel() {
         super.setDoubleBuffered(true);
-        timer = new Timer(20, this);
+        timer = new Timer(TIMER_SPEED, this);
         intializeBackgroundImage();
         game = new Game();
 
