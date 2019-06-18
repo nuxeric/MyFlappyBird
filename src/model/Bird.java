@@ -12,11 +12,9 @@ public class Bird extends AbstractGameObject {
     private static final double BIRD_GRAVITY = 0.5;
     private static final int BIRD_ANGLE_TO_ADD = 17;
     private static final int BIRD_TILT_ANGLE = -18;
-    private static final int BIRDS_INITIAL_XLOC = 100; // might want to change these
-    private static final int BIRDS_INITIAL_YLOC = 100; // because it doesnt really seem to belong here , you probs want to choose from gametop panel where it goes
 
 
-    // EFFECTS: scale the gameObject to the given initialWidth, and given initialHeight
+    // EFFECTS: scale the gameObject to the given initialWidth, and given initialHeight, intially set at (0,0)
     public Bird(int width, int height) {
         Image image = null;
         try {
@@ -27,8 +25,8 @@ public class Bird extends AbstractGameObject {
         }
         gameObjectImage = image;
         gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
-        xLoc = BIRDS_INITIAL_XLOC;
-        yLoc = BIRDS_INITIAL_YLOC;
+        xLoc = 0;
+        yLoc = 0;
         yVelocity = 0;
         angle = Math.toRadians(15);
     }
@@ -84,6 +82,16 @@ public class Bird extends AbstractGameObject {
 
     public double getAngle() {
         return angle;
+    }
+
+    // setters
+
+    public void setXLoc(int x) {
+        xLoc = x;
+    }
+
+    public void setYLoc(int y) {
+        yLoc = y;
     }
 
 

@@ -6,18 +6,18 @@ import java.io.IOException;
 import java.util.Random;
 
 import static ui.Game.*;
-import static ui.RunableApp.SCREEN_HEIGHT;
+import static ui.RunableApp.SCREEN_HEIGHT; // these static calls should be reduced to reduce coupling!
 
 public class Pipe extends AbstractGameObject {
 
 
-    private static final int PIPE_X_VELOCITY = 1;
+
 
     private boolean orientation;
 
 
 
-    //EFFECTS: scale the Pipe to the given initialWidth, and given initialHeight, and with correct orientation
+    //EFFECTS: scale the Pipe to the given width, and given height, and with correct orientation and intially set at yLoc = 0;
     public Pipe(int width, int height, boolean orientation) {
         Image image = null;
         if (orientation) {
@@ -45,11 +45,7 @@ public class Pipe extends AbstractGameObject {
         gameObjectImage = image;
         gameObjectImage = gameObjectImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-        if (orientation) {
-            yLoc = SCREEN_HEIGHT - gameObjectImage.getHeight(null) - HEIGHT_OF_GROUND;
-        } else {
-            yLoc = 0;
-        }
+        yLoc = 0;
 
 
     }
@@ -68,12 +64,16 @@ public class Pipe extends AbstractGameObject {
 
     }
 
-    public void setPipeXLoc(int xLoc) {
-        this.xLoc = xLoc;
+    public void setXloc(int x) {
+        xLoc = x;
     }
 
-    public void movePipe() {
-        xLoc -= PIPE_X_VELOCITY;
+    public void setYloc(int y) {
+        yLoc = y;
+    }
+
+    public void movePipe(int xvelocity) {
+        xLoc -= xvelocity;
     }
 
 

@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-import static ui.RunableApp.SCREEN_HEIGHT;
+import static ui.RunableApp.SCREEN_HEIGHT; // these imports shouldn't be here to reduce coupling!!
 
 
 public class Ground extends AbstractGameObject {
@@ -25,6 +25,7 @@ public class Ground extends AbstractGameObject {
         gameObjectImage = image;
         gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
         xLoc = 0;
+        // this y location thing should be abstracted away
         yLoc = SCREEN_HEIGHT - gameObjectImage.getHeight(null);
     }
 

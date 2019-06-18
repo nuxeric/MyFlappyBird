@@ -19,10 +19,14 @@ public class Game {
 
     public static final int INITIAL_WIDTH_OF_BIRD = 50;
     public static final int INITIAL_HEIGHT_OF_BIRD = 50;
+    private static final int BIRDS_INITIAL_XLOC = 100;
+    private static final int BIRDS_INITIAL_YLOC = 100;
 
     public static final int MAXIMUM_PIPE_HEIGHT = SCREEN_HEIGHT - 300;
     public static final int PIPE_WIDTH = 100;
     public static final int INITIAL_PIPE_HEIGHT = 100;
+    private static final int PIPE_X_VELOCITY = 1;
+
 
     public static final int HEIGHT_OF_GROUND = 140;
 
@@ -37,6 +41,8 @@ public class Game {
 
     private void intializeGameObjects() {
         bird = new Bird(INITIAL_WIDTH_OF_BIRD, INITIAL_HEIGHT_OF_BIRD);
+        bird.setXLoc(BIRDS_INITIAL_XLOC);
+        bird.setYLoc(BIRDS_INITIAL_YLOC);
         ground = new Ground(2*SCREEN_WIDTH, HEIGHT_OF_GROUND);
         gameStarted = false;
         createPipes();
@@ -44,12 +50,15 @@ public class Game {
 
     }
 
+
     private void createPipes() {
         pipes = new ArrayList<>();
         boolean orientation = true;
         for (int i = 0; i < 6; i++) {
             Pipe pipeUp = new Pipe(PIPE_WIDTH , INITIAL_PIPE_HEIGHT, orientation);
             Pipe pipeDown = new Pipe(PIPE_WIDTH , INITIAL_PIPE_HEIGHT, !orientation);
+            pipeUp.setYloc(SCREEN_HEIGHT - pipeUp.getGameObjectImage().getHeight(null) - HEIGHT_OF_GROUND);
+            pipeDown.setYloc(0);
             pipes.add(pipeUp);
             pipes.add(pipeDown);
         }
@@ -60,11 +69,11 @@ public class Game {
         int counter = 1; // this is bad design i think i should consider another implementation
         for (Pipe p : pipes) {
             if (counter % 2 == 0) {
-                p.setPipeXLoc(xLoc);
+                p.setXloc(xLoc);
                 xLoc += PIPE_GAP;
                 counter++;
             } else {
-                p.setPipeXLoc(xLoc);
+                p.setXloc(xLoc);
                 counter++;
             }
         }
@@ -84,7 +93,7 @@ public class Game {
 
     private void movePipes() {
         for (Pipe p: pipes) {
-            p.movePipe();
+            p.movePipe(PIPE_X_VELOCITY);
         }
     }
 
