@@ -20,8 +20,14 @@ public class Game {
     public static final int INITIAL_WIDTH_OF_BIRD = 50;
     public static final int INITIAL_HEIGHT_OF_BIRD = 50;
 
+    public static final int MAXIMUM_PIPE_HEIGHT = SCREEN_HEIGHT - 300;
+    public static final int PIPE_WIDTH = 100;
+    public static final int INITIAL_PIPE_HEIGHT = 100;
+
+    public static final int HEIGHT_OF_GROUND = 140;
+
+
     private static final int X_GAP_BETWEEN_PIPES = 150;
-    public static final int MAXIMUM_PIPE_UP_HEIGHT = SCREEN_HEIGHT - 300;
     private static final int PIPE_GAP = 250;
 
 
@@ -31,7 +37,7 @@ public class Game {
 
     private void intializeGameObjects() {
         bird = new Bird(INITIAL_WIDTH_OF_BIRD, INITIAL_HEIGHT_OF_BIRD);
-        ground = new Ground();
+        ground = new Ground(2*SCREEN_WIDTH, HEIGHT_OF_GROUND);
         gameStarted = false;
         createPipes();
         intializeXCoordOfPipes();
@@ -42,8 +48,8 @@ public class Game {
         pipes = new ArrayList<>();
         boolean orientation = true;
         for (int i = 0; i < 6; i++) {
-            Pipe pipeUp = new Pipe(orientation);
-            Pipe pipeDown = new Pipe(!orientation);
+            Pipe pipeUp = new Pipe(PIPE_WIDTH , INITIAL_PIPE_HEIGHT, orientation);
+            Pipe pipeDown = new Pipe(PIPE_WIDTH , INITIAL_PIPE_HEIGHT, !orientation);
             pipes.add(pipeUp);
             pipes.add(pipeDown);
         }

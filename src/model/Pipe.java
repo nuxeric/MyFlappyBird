@@ -5,14 +5,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Random;
 
-import static model.Ground.HEIGHT_OF_GROUND;
-import static ui.Game.MAXIMUM_PIPE_UP_HEIGHT;
+import static ui.Game.*;
 import static ui.RunableApp.SCREEN_HEIGHT;
 
 public class Pipe extends AbstractGameObject {
 
-    private static final int PIPE_WIDTH = 100;
-    private static final int INITIAL_PIPE_HEIGHT = 100;
+
     private static final int PIPE_X_VELOCITY = 1;
 
     private boolean orientation;
@@ -20,7 +18,7 @@ public class Pipe extends AbstractGameObject {
 
 
     //EFFECTS: scale the Pipe to the given initialWidth, and given initialHeight, and with correct orientation
-    public Pipe(boolean orientation) {
+    public Pipe(int width, int height, boolean orientation) {
         Image image = null;
         if (orientation) {
             // this is up!!
@@ -45,7 +43,7 @@ public class Pipe extends AbstractGameObject {
 
 
         gameObjectImage = image;
-        gameObjectImage = gameObjectImage.getScaledInstance(PIPE_WIDTH, INITIAL_PIPE_HEIGHT, Image.SCALE_SMOOTH);
+        gameObjectImage = gameObjectImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
         if (orientation) {
             yLoc = SCREEN_HEIGHT - gameObjectImage.getHeight(null) - HEIGHT_OF_GROUND;
@@ -57,16 +55,17 @@ public class Pipe extends AbstractGameObject {
     }
 
     // creates a random height of two pipes with the appropriate Pipe_Gap
-    public void randomizePipeHeights() {
+    public void randomizePipeHeight() {
         Random r = new Random();
-        if (orientation) {
-            // if the pipe is facing up
-            r.nextInt(MAXIMUM_PIPE_UP_HEIGHT);
+            int newHeight = r.nextInt(MAXIMUM_PIPE_HEIGHT);
+            gameObjectImage = gameObjectImage.getScaledInstance(PIPE_WIDTH, newHeight, Image.SCALE_SMOOTH);
+    }
 
+    //
+    public void setPipeHeightBasedOnPipe(Pipe pipe, int gap) {
+        int height1 =  pipe.gameObjectImage.getHeight(null);
+        int height2 = height1 - gap;
 
-        } else {
-
-        }
     }
 
     public void setPipeXLoc(int xLoc) {
