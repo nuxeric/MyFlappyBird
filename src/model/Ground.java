@@ -4,16 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-import static ui.RunableApp.SCREEN_HEIGHT; // these imports shouldn't be here to reduce coupling!!
 
 
 public class Ground extends AbstractGameObject {
 
     private static final int X_VELOCITY = -4;
 
-    // I must change all this later to make it more abstract, a ground object should be able
-    // to make any ground object given widthheight
-    // not just a specific one with static variable that should be in game
     public Ground(int width, int height) {
         Image image = null;
         try {
@@ -25,8 +21,7 @@ public class Ground extends AbstractGameObject {
         gameObjectImage = image;
         gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
         xLoc = 0;
-        // this y location thing should be abstracted away
-        yLoc = SCREEN_HEIGHT - gameObjectImage.getHeight(null);
+
     }
 
     public void moveGround() {
@@ -34,8 +29,8 @@ public class Ground extends AbstractGameObject {
     }
 
 
-
-
-
+    public void setYLoc(int y) {
+        yLoc = y;
+    }
 
 }

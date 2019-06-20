@@ -3,10 +3,9 @@ package model;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
-import static ui.Game.*;
-import static ui.RunableApp.SCREEN_HEIGHT; // these static calls should be reduced to reduce coupling!
 
 public class Pipe extends AbstractGameObject {
 
@@ -30,7 +29,7 @@ public class Pipe extends AbstractGameObject {
                 e.printStackTrace();
             }
 
-        } else if (!orientation) {
+        } else {
             // this is south!!!
             this.orientation = orientation;
             try {
@@ -50,19 +49,23 @@ public class Pipe extends AbstractGameObject {
 
     }
 
-    // creates a random height of two pipes with the appropriate Pipe_Gap
-    public void randomizePipeHeight() {
-        Random r = new Random();
-            int newHeight = r.nextInt(MAXIMUM_PIPE_HEIGHT);
-            gameObjectImage = gameObjectImage.getScaledInstance(PIPE_WIDTH, newHeight, Image.SCALE_SMOOTH);
-    }
-
-    //
-    public void setPipeHeightBasedOnPipe(Pipe pipe, int gap) {
-        int height1 =  pipe.gameObjectImage.getHeight(null);
-        int height2 = height1 - gap;
-
-    }
+//    // creates a random height of two pipes with the appropriate
+//    public void randomizePipeHeight(int maxPipeHeight) {
+//        Random r = new Random();
+//            int newHeight = r.nextInt(maxPipeHeight);
+//            gameObjectImage = gameObjectImage.getScaledInstance(gameObjectImage.getWidth(null), newHeight, Image.SCALE_SMOOTH);
+//    }
+//
+//    //
+//    public void setPipeHeightBasedOnPipeAndGround(Pipe pipe, int gap, int minimumHeight) {
+//        int heightdownwards =  pipe.gameObjectImage.getHeight(null);
+//        int heightupwards = minimumHeight + heightdownwards - gap ;
+//        if (heightupwards <= 0) {
+//            heightupwards = minimumHeight;
+//        }
+//        gameObjectImage = gameObjectImage.getScaledInstance(gameObjectImage.getWidth(null), heightupwards, Image.SCALE_SMOOTH);
+//
+//    }
 
     public void setXloc(int x) {
         xLoc = x;
@@ -77,4 +80,12 @@ public class Pipe extends AbstractGameObject {
     }
 
 
+    public boolean getOrientation() {
+        return orientation;
+    }
+
+
+    public void resetXLocation(ArrayList<Pipe> pipes, int space) {
+        setXloc(300); // TODO implement correct way of handling this
+    }
 }

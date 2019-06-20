@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class Bird extends AbstractGameObject {
     private double yVelocity, angle;
+    private Image sprite1, sprite2, sprite3;
 
 
     private static final double BIRD_GRAVITY = 0.5;
@@ -16,6 +17,16 @@ public class Bird extends AbstractGameObject {
 
     // EFFECTS: scale the gameObject to the given initialWidth, and given initialHeight, intially set at (0,0)
     public Bird(int width, int height) {
+        intializeBirdSprites();
+        gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
+        xLoc = 0;
+        yLoc = 0;
+        yVelocity = 0;
+        angle = Math.toRadians(15);
+    }
+
+    // TODO I NEED TO IMPLEMENT SPRITES
+    private void intializeBirdSprites() {
         Image image = null;
         try {
             image = ImageIO.read(getClass().getResource("/resources/images/BirdImage.png"));
@@ -24,11 +35,7 @@ public class Bird extends AbstractGameObject {
             e.printStackTrace();
         }
         gameObjectImage = image;
-        gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
-        xLoc = 0;
-        yLoc = 0;
-        yVelocity = 0;
-        angle = Math.toRadians(15);
+
     }
 
     // EFFECTS: updates the birds ylocation and yvelocity
