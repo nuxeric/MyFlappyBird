@@ -103,7 +103,7 @@ public class Game {
         // TODO implement this
         for (Pipe p : pipes) {
             if (leftScreen(p)) {
-               p.resetXLocation(pipes, X_GAP_BETWEEN_PIPES); // I'm getting an error when im trying to implement this...
+               p.resetXLocation(pipes, X_GAP_BETWEEN_PIPES);
                 System.out.println(p.getxLoc());
             }
         }

@@ -86,6 +86,6 @@ public class Pipe extends AbstractGameObject {
 
 
     public void resetXLocation(ArrayList<Pipe> pipes, int space) {
-        setXloc(300); // TODO implement correct way of handling this
+        setXloc((pipes.size() / 2) * space - gameObjectImage.getWidth(null) /2);
     }
 }
