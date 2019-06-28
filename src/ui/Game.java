@@ -62,8 +62,10 @@ public class Game {
         for (int i = 0; i < 6; i++) {
             Pipe pipeUp = new Pipe(PIPE_WIDTH, INITIAL_PIPE_HEIGHT, orientation);
             Pipe pipeDown = new Pipe(PIPE_WIDTH, INITIAL_PIPE_HEIGHT, !orientation);
+            pipeUp.setCoorespondingPipe(pipeDown);
+            pipeDown.setCoorespondingPipe(pipeUp);
             pipeDown.randomizePipeHeight(PIPE_RANDOM_HEIGHT_POSITION_BOUND, PIPE_MAX_UPWARDS_BOUND);
-            pipeUp.setPipeHeightBasedOnOtherPipe(pipeDown, PIPE_GAP);
+            pipeDown.getCoorespondingPipe().setPipeHeightBasedOnOtherPipe(pipeDown, PIPE_GAP);
             pipes.add(pipeUp);
             pipes.add(pipeDown);
         }
@@ -122,10 +124,13 @@ public class Game {
                 System.out.println(gameScore);
             }
 
-
             // reset pipe x coordinates
             if (leftScreen(pipe)) {
                 pipe.resetXLocation(pipes, X_GAP_BETWEEN_PIPES);
+                pipe.randomizePipeHeight(PIPE_RANDOM_HEIGHT_POSITION_BOUND, PIPE_MAX_UPWARDS_BOUND);
+                pipe.getCoorespondingPipe().setPipeHeightBasedOnOtherPipe(pipe, PIPE_GAP);
+
+
             }
 
         }

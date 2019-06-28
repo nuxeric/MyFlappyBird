@@ -11,6 +11,7 @@ public class Pipe extends AbstractGameObject {
 
 
     private boolean orientation;
+    private Pipe coorespondingPipe;
 
 
     //EFFECTS: scale the Pipe to the given width, and given height, and with correct orientation and intially set at yLoc = 0;
@@ -51,6 +52,7 @@ public class Pipe extends AbstractGameObject {
     }
 
     public void setPipeHeightBasedOnOtherPipe(Pipe p, int gap) {
+        System.out.println("randomizing pipe");
         int pipeOnScreenSpace;
         if (p.yLoc <= 0) {
             pipeOnScreenSpace = p.yLoc + p.gameObjectImage.getHeight(null) / 2;
@@ -76,5 +78,18 @@ public class Pipe extends AbstractGameObject {
     public void resetXLocation(ArrayList<Pipe> pipes, int space) {
         setXloc((pipes.size() / 2) * space - gameObjectImage.getWidth(null) / 2);
     }
+
+    public void setCoorespondingPipe(Pipe pipe) {
+        if (pipe.getOrientation() == orientation) {
+            System.out.println("the pipes have the same orientation! this can cause errors down the road");
+        }
+        coorespondingPipe = pipe;
+    }
+
+    public Pipe getCoorespondingPipe() {
+        return coorespondingPipe;
+    }
+
+
 
 }
