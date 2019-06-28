@@ -21,4 +21,12 @@ public abstract class AbstractGameObject {
         return gameObjectImage;
     }
 
+    public void setXloc(int x) {
+        xLoc = x;
+    }
+
+    public void setYloc(int y) {
+        yLoc = y;
+    }
+
 }

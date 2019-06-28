@@ -19,7 +19,7 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
     private Image backGroundImage;
     private Game game;
 
-    private static final int TIMER_SPEED = 20;
+    private static final int TIMER_SPEED = 15;
 
 
     GameTopJPanel() {
@@ -57,10 +57,12 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         g2d.drawImage(game.getBird().getGameObjectImage(), game.getBird().getxLoc(), game.getBird().getyLoc(), null);
         //Reset our graphics object so we can draw with it again.
         g2d.setTransform(backup);
-        g2d.drawImage(game.getGround().getGameObjectImage(), game.getGround().getxLoc(), game.getGround().getyLoc(), null);
         for (Pipe p : game.getPipeArray()) {
             g2d.drawImage(p.getGameObjectImage(),p.getxLoc(),p.getyLoc(),null);
         }
+
+        // must draw this last to make sure pipes dont get warped cuz you cant scale it!
+        g2d.drawImage(game.getGround().getGameObjectImage(), game.getGround().getxLoc(), game.getGround().getyLoc(), null);
     }
 
     private void handleBirdRotationForDrawing(Graphics2D g2d) {

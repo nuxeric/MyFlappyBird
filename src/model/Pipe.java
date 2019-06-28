@@ -10,10 +10,7 @@ import java.util.Random;
 public class Pipe extends AbstractGameObject {
 
 
-
-
     private boolean orientation;
-
 
 
     //EFFECTS: scale the Pipe to the given width, and given height, and with correct orientation and intially set at yLoc = 0;
@@ -39,40 +36,31 @@ public class Pipe extends AbstractGameObject {
                 e.printStackTrace();
             }
         }
-
-
         gameObjectImage = image;
         gameObjectImage = gameObjectImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
         yLoc = 0;
 
 
     }
 
-//    // creates a random height of two pipes with the appropriate
-//    public void randomizePipeHeight(int maxPipeHeight) {
-//        Random r = new Random();
-//            int newHeight = r.nextInt(maxPipeHeight);
-//            gameObjectImage = gameObjectImage.getScaledInstance(gameObjectImage.getWidth(null), newHeight, Image.SCALE_SMOOTH);
-//    }
-//
-//    //
-//    public void setPipeHeightBasedOnPipeAndGround(Pipe pipe, int gap, int minimumHeight) {
-//        int heightdownwards =  pipe.gameObjectImage.getHeight(null);
-//        int heightupwards = minimumHeight + heightdownwards - gap ;
-//        if (heightupwards <= 0) {
-//            heightupwards = minimumHeight;
-//        }
-//        gameObjectImage = gameObjectImage.getScaledInstance(gameObjectImage.getWidth(null), heightupwards, Image.SCALE_SMOOTH);
-//
-//    }
 
-    public void setXloc(int x) {
-        xLoc = x;
+    public void randomizePipeHeight(int bound, int maxUpwardsBound) {
+        Random r = new Random();
+        int newYLocation = r.nextInt(bound) - maxUpwardsBound;
+        setYloc(newYLocation); // need the + - for negative values as well ( so the pipe can move upwards)
     }
 
-    public void setYloc(int y) {
-        yLoc = y;
+    public void setPipeHeightBasedOnOtherPipe(Pipe p, int gap) {
+        int pipeOnScreenSpace;
+        if (p.yLoc <= 0) {
+            pipeOnScreenSpace = p.yLoc + p.gameObjectImage.getHeight(null) / 2;
+        } else {
+            pipeOnScreenSpace = p.gameObjectImage.getHeight(null) / 2 + p.yLoc;
+        }
+
+        // set a minimum on this so that the bottom pipe still always renders.
+        this.setYloc(pipeOnScreenSpace + gap + this.gameObjectImage.getHeight(null) / 2);
+
     }
 
     public void movePipe(int xvelocity) {
@@ -86,6 +74,7 @@ public class Pipe extends AbstractGameObject {
 
 
     public void resetXLocation(ArrayList<Pipe> pipes, int space) {
-        setXloc((pipes.size() / 2) * space - gameObjectImage.getWidth(null) /2);
+        setXloc((pipes.size() / 2) * space - gameObjectImage.getWidth(null) / 2);
     }
+
 }
