@@ -4,6 +4,8 @@ import model.Bird;
 import model.Ground;
 import model.Pipe;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static ui.RunableApp.SCREEN_HEIGHT;
@@ -19,8 +21,8 @@ public class Game {
     public int gameScore;
 
 
-    public static final int INITIAL_WIDTH_OF_BIRD = 75;
-    public static final int INITIAL_HEIGHT_OF_BIRD = 75;
+    public static final int BIRD_WIDTH = 75;
+    public static final int BIRD_HEIGHT = 75;
     private static final int BIRDS_INITIAL_XLOC = 200;
     private static final int BIRDS_INITIAL_YLOC = 200;
 
@@ -42,9 +44,9 @@ public class Game {
         intializeGameObjects();
     }
 
-    // EFFECTS: intialize all the objects in the game
+    // EFFECTS: initialize all the objects in the game
     private void intializeGameObjects() {
-        bird = new Bird(INITIAL_WIDTH_OF_BIRD, INITIAL_HEIGHT_OF_BIRD);
+        bird = new Bird(BIRD_WIDTH, BIRD_HEIGHT);
         gameScore = 0;
         bird.setXLoc(BIRDS_INITIAL_XLOC);
         bird.setYLoc(BIRDS_INITIAL_YLOC);
@@ -72,7 +74,7 @@ public class Game {
         intializeXCoordOfPipes();
     }
 
-    // EFFECTS: intialize the Xlocation of all pipes in pipes
+    // EFFECTS: initialize the Xlocation of all pipes in pipes
     private void intializeXCoordOfPipes() {
         int xLoc = SCREEN_WIDTH + 200;
         int counter = 1; // this is bad design i think i should consider another implementation
@@ -95,7 +97,6 @@ public class Game {
             bird.updateGravityOnBirdsYLocation();
             bird.updateRotationAngle();
             updatePipes();
-            checkForCollisions();
 
         }
     }
@@ -116,6 +117,8 @@ public class Game {
             // update pipes x velocity
             pipe.movePipe(PIPE_X_VELOCITY);
 
+            checkForCollisions(pipe);
+
             // update gameScore
             if (pipe.getOrientation() == true &&
                     pipe.getxLoc() + PIPE_WIDTH / 2  < bird.getxLoc() &&
@@ -125,21 +128,50 @@ public class Game {
             }
 
             // reset pipe x coordinates
+            // randomize pipes height
             if (leftScreen(pipe)) {
                 pipe.resetXLocation(pipes, X_GAP_BETWEEN_PIPES);
                 pipe.randomizePipeHeight(PIPE_RANDOM_HEIGHT_POSITION_BOUND, PIPE_MAX_UPWARDS_BOUND);
                 pipe.getCoorespondingPipe().setPipeHeightBasedOnOtherPipe(pipe, PIPE_GAP);
-
-
             }
-
         }
     }
 
-    private void checkForCollisions() {
+    private void checkForCollisions(Pipe pipe) {
         if (gameStarted) {
-            // TODO must add implementation later once we make a design choice
+            Rectangle pipe1 = pipe.getBounds();
+            Rectangle pipe2 = pipe.getCoorespondingPipe().getBounds();
+            Rectangle birdRect = bird.getBounds();
+            if (pipe1.intersects(birdRect)) {
+                Rectangle intersectRect = birdRect.intersection(pipe1);
+                //collisionPixelChecker(pipe, intersectRect);
+            } else if (pipe2.intersects(birdRect)) {
+                Rectangle intersectRect = birdRect.intersection(pipe2);
+                //collisionPixelChecker(pipe.getCoorespondingPipe(), intersectRect);
+            }
         }
+    }
+
+    private void collisionPixelChecker(Pipe pipe, Rectangle interesctRect) {
+        BufferedImage birdImage = bird.toBufferedImage();
+        BufferedImage pipeImage = pipe.toBufferedImage();
+        System.out.println("we should be hitting");
+
+        int leftX = (int) interesctRect.getMinX();
+        int rightX = (int) interesctRect.getMaxX();
+        int topY = (int) interesctRect.getMinY();
+        int botY = (int) interesctRect.getMaxY();
+
+        for (int i = leftX; i <= rightX; i++) {
+            for (int j = topY; j <= botY; j++) {
+                if ((birdImage.getRGB(i , j) & 0xFF000000) != 0x00000000 &&
+                        (pipeImage.getRGB(i, j) & 0xFF000000) != 0x00000000) {
+                    System.out.println( "hellodudeee");
+                    gameStarted = false;
+                }
+            }
+        }
+
     }
 
     // getters

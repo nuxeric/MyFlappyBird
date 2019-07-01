@@ -55,10 +55,21 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         handleBirdRotationForDrawing(g2d);
         //Draw our image like normal
         g2d.drawImage(game.getBird().getGameObjectImage(), game.getBird().getxLoc(), game.getBird().getyLoc(), null);
+
+
+        g2d.setColor(Color.RED);
+        g2d.drawRect(game.getBird().getBounds().x, game.getBird().getBounds().y, game.getBird().getBounds().width, game.getBird().getBounds().height);
+
+
         //Reset our graphics object so we can draw with it again.
         g2d.setTransform(backup);
         for (Pipe p : game.getPipeArray()) {
             g2d.drawImage(p.getGameObjectImage(),p.getxLoc(),p.getyLoc(),null);
+
+            g2d.setColor(Color.RED);
+            g2d.drawRect(p.getBounds().x, p.getBounds().y, p.getBounds().width, p.getBounds().height);
+            g2d.drawRect(p.getCoorespondingPipe().getBounds().x, p.getCoorespondingPipe().getBounds().y,
+                    p.getCoorespondingPipe().getBounds().width, p.getCoorespondingPipe().getBounds().height);
         }
 
         // must draw this last to make sure pipes dont get warped cuz you cant scale it!

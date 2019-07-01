@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class AbstractGameObject {
     protected Image gameObjectImage;
@@ -27,6 +28,25 @@ public abstract class AbstractGameObject {
 
     public void setYloc(int y) {
         yLoc = y;
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(xLoc - gameObjectImage.getWidth(null) /2, yLoc - gameObjectImage.getHeight(null) /2, gameObjectImage.getWidth(null), gameObjectImage.getHeight(null));
+    }
+
+
+    public BufferedImage toBufferedImage()
+    {
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(gameObjectImage.getWidth(null), gameObjectImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(gameObjectImage, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
     }
 
 }

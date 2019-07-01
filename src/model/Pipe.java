@@ -52,7 +52,6 @@ public class Pipe extends AbstractGameObject {
     }
 
     public void setPipeHeightBasedOnOtherPipe(Pipe p, int gap) {
-        System.out.println("randomizing pipe");
         int pipeOnScreenSpace;
         if (p.yLoc <= 0) {
             pipeOnScreenSpace = p.yLoc + p.gameObjectImage.getHeight(null) / 2;
@@ -81,7 +80,7 @@ public class Pipe extends AbstractGameObject {
 
     public void setCoorespondingPipe(Pipe pipe) {
         if (pipe.getOrientation() == orientation) {
-            System.out.println("the pipes have the same orientation! this can cause errors down the road");
+            System.out.println("the pipes have the same orientation! this can cause errors down the road"); // should add error handling
         }
         coorespondingPipe = pipe;
     }
