@@ -20,7 +20,6 @@ public class Game {
     private Bird bird;
     private Ground ground;
     private ArrayList<Pipe> pipes;
-    public int gameScore;
     private GameScore gameScore2;
 
 
@@ -37,6 +36,8 @@ public class Game {
 
     private static final int WIDTH_OF_GAMESCORE = 50;
     private static final int HEIGHT_OF_GAMESCORE = 50;
+    private static final int X_POSITION_OF_GAMESCORE = SCREEN_WIDTH / 2;
+    private static final int Y_POSITION_OF_GAMESCORE = 50;
 
 
     private static final int HEIGHT_OF_GROUND = 140;
@@ -55,8 +56,7 @@ public class Game {
      */
     private void initializeGameObjects() {
         bird = new Bird(BIRD_WIDTH, BIRD_HEIGHT);
-        gameScore = 0;
-        gameScore2 = new GameScore(WIDTH_OF_GAMESCORE, HEIGHT_OF_GAMESCORE);
+        initializeGameScore();
         bird.setXLoc(BIRDS_INITIAL_XLOC);
         bird.setYLoc(BIRDS_INITIAL_YLOC);
         ground = new Ground(2 * SCREEN_WIDTH, HEIGHT_OF_GROUND);
@@ -64,6 +64,12 @@ public class Game {
         gameStarted = false;
         createPipes();
         gameOver = false;
+    }
+
+    private void initializeGameScore() {
+        gameScore2 = new GameScore(WIDTH_OF_GAMESCORE, HEIGHT_OF_GAMESCORE);
+        gameScore2.setxPos(X_POSITION_OF_GAMESCORE);
+        gameScore2.setyPos(Y_POSITION_OF_GAMESCORE);
     }
 
 
@@ -166,9 +172,7 @@ public class Game {
         if (pipe.getOrientation() == true &&
                 pipe.getxLoc() - PIPE_WIDTH / 2 < bird.getxLoc() &&
                 pipe.getxLoc() - PIPE_WIDTH / 2 > bird.getxLoc() - 4) { // the minus 4 is there for game velocity of pipes
-            gameScore++;
             gameScore2.incrementScore();
-            System.out.println(gameScore);
         }
     }
 

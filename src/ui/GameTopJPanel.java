@@ -100,9 +100,13 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         for (int i = 0; i < game.getGameScore().getScoreList().size(); i++) {
             Integer currentScoreInteger = game.getGameScore().getScoreList().get(i);
             if (i == 0) {
-                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger), 200 + i * 200 , 200 ,null );
+                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger),
+                        game.getGameScore().getxPos() - i * game.getGameScore().getGameObjectImage(i).getWidth(null) ,
+                        game.getGameScore().getyPos() ,null );
             } else if ( i != 0 && currentScoreInteger >= 1) {
-                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger), 200 + i * 200, 200 ,null );
+                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger),
+                        game.getGameScore().getxPos() - i * game.getGameScore().getGameObjectImage(i).getWidth(null) ,
+                        game.getGameScore().getyPos() ,null );
             }
         }
 
