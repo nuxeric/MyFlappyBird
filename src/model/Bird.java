@@ -7,7 +7,6 @@ import java.io.IOException;
 
 public class Bird extends AbstractGameObject {
     private double yVelocity, angle;
-    private Image sprite1, sprite2, sprite3;
 
 
     private static final double BIRD_GRAVITY = 0.5;
@@ -25,7 +24,6 @@ public class Bird extends AbstractGameObject {
         angle = Math.toRadians(15);
     }
 
-    // TODO I NEED TO IMPLEMENT SPRITES
     private void intializeBirdSprites() {
         Image image = null;
         try {

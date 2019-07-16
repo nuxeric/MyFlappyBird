@@ -1,6 +1,5 @@
 package ui;
 
-import model.Bird;
 import model.Pipe;
 
 import javax.imageio.ImageIO;
@@ -17,15 +16,19 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
 
     private Timer timer;
     private Image backGroundImage;
+    private Image preGameImage;
     private Game game;
 
     private static final int TIMER_SPEED = 15;
 
-
+    /**
+     * Constructor that creates a Timer, initializes background Images, and constructs a game
+     */
     GameTopJPanel() {
         super.setDoubleBuffered(true);
         timer = new Timer(TIMER_SPEED, this);
-        intializeBackgroundImage();
+        initializeBackgroundImage();
+        initializePreGameImage();
         game = new Game();
 
         // all my objects must be before my timer starts
@@ -35,8 +38,28 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
 
     }
 
+    /**
+     * Reads PreGamePrompt.png and loads it into memory.
+     *
+     * @throws IOException if the PreGamePrompt.png doesn't load properly
+     */
+    private void initializePreGameImage() {
+        try {
+            preGameImage = ImageIO.read(getClass().getResource("/resources/images/PreGamePrompt.png"));
+        } catch (IOException e) {
+            System.out.println("pregame image didnt load");
+            e.printStackTrace();
+        }
+        preGameImage = preGameImage.getScaledInstance(175, 175, Image.SCALE_SMOOTH);
+    }
 
-    private void intializeBackgroundImage() {
+
+    /**
+     * Reads GameBackGround.jpg and loads it into memory.
+     *
+     * @throws IOException if the GameBackGround.jpg doesn't load properly
+     */
+    private void initializeBackgroundImage() {
         try {
             backGroundImage = ImageIO.read(getClass().getResource("/resources/images/GameBackGround.jpg"));
         } catch (IOException e) {
@@ -45,43 +68,83 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         }
     }
 
+    // we could abstract this all away in one game method called get all Paint components or something
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(backGroundImage, 0, 0, getWidth(), getHeight(), null);
+        // draw pipes
+        handlePipeDrawingForPaintComponent(g2d);
+
+
         //Make a backup so that we can reset our graphics object after using it.
         AffineTransform backup = g2d.getTransform();
         handleBirdRotationForDrawing(g2d);
         //Draw our image like normal
         g2d.drawImage(game.getBird().getGameObjectImage(), game.getBird().getxLoc(), game.getBird().getyLoc(), null);
-
-
-        g2d.setColor(Color.RED);
-        g2d.drawRect(game.getBird().getBounds().x, game.getBird().getBounds().y, game.getBird().getBounds().width, game.getBird().getBounds().height);
-
-
         //Reset our graphics object so we can draw with it again.
         g2d.setTransform(backup);
-        for (Pipe p : game.getPipeArray()) {
-            g2d.drawImage(p.getGameObjectImage(),p.getxLoc(),p.getyLoc(),null);
 
-            g2d.setColor(Color.RED);
-            g2d.drawRect(p.getBounds().x, p.getBounds().y, p.getBounds().width, p.getBounds().height);
-            g2d.drawRect(p.getCoorespondingPipe().getBounds().x, p.getCoorespondingPipe().getBounds().y,
-                    p.getCoorespondingPipe().getBounds().width, p.getCoorespondingPipe().getBounds().height);
-        }
+        drawPreGamePrompt(g2d);
 
         // must draw this last to make sure pipes dont get warped cuz you cant scale it!
         g2d.drawImage(game.getGround().getGameObjectImage(), game.getGround().getxLoc(), game.getGround().getyLoc(), null);
+
+        drawGameScore(g2d);
     }
 
+    private void drawGameScore(Graphics2D g2d) {
+        // TODO must implement this
+
+        for (int i = 0; i < game.getGameScore().getScoreList().size(); i++) {
+            Integer currentScoreInteger = game.getGameScore().getScoreList().get(i);
+            if (i == 0) {
+                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger), 200 + i * 200 , 200 ,null );
+            } else if ( i != 0 && currentScoreInteger >= 1) {
+                g2d.drawImage(game.getGameScore().getGameObjectImage(currentScoreInteger), 200 + i * 200, 200 ,null );
+            }
+        }
+
+    }
+
+    private void drawPreGamePrompt(Graphics2D g2d) {
+        if (game.gameStarted == false) {
+            g2d.drawImage(preGameImage,
+                    game.getBird().getxLoc() - game.getBird().getGameObjectImage().getWidth(null) / 2 - 20,
+                    game.getBird().getyLoc() - game.getBird().getGameObjectImage().getHeight(null) / 2 - 50,
+                    preGameImage.getWidth(null),
+                    preGameImage.getHeight(null), null);
+        }
+    }
+
+    /**
+     * Draws all pipes onto the game
+     */
+    private void handlePipeDrawingForPaintComponent(Graphics2D g2d) {
+        for (Pipe p : game.getPipeArray()) {
+            g2d.drawImage(p.getGameObjectImage(), p.getxLoc(), p.getyLoc(), null);
+        }
+    }
+
+    /**
+     * Creates a new AffineTransform and gets the correct rotation angle from the bird, then rotates the
+     * bird Image.
+     */
     private void handleBirdRotationForDrawing(Graphics2D g2d) {
         AffineTransform a = AffineTransform.getRotateInstance(game.getBird().getAngle(),
                 game.getBird().getxLoc() + game.getBird().getGameObjectImage().getWidth(null) / 2,
                 game.getBird().getyLoc() + game.getBird().getGameObjectImage().getHeight( null) / 2);
             //Set our Graphics2D object to the transform
             g2d.setTransform(a);
+    }
+
+    /**
+     * Creates a new Game
+     *
+     */
+    private void resetGame() {
+        game = new Game();
     }
 
     /**
@@ -120,11 +183,14 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        if (game.gameStarted) {
+        if (game.gameStarted && game.gameOver == false) {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 game.getBird().flap();
             }
-        } else {
+        } else if (game.gameStarted == true && game.gameOver == true) {
+            resetGame();
+        }
+        else {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 game.gameStarted = true;
             }
