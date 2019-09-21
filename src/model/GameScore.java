@@ -37,7 +37,7 @@ public class GameScore {
     /**
      * GameScore constructor helper that loads all the correct Images into the private members
      * @param width the width of the GameScore Images
-     * @param height the height of the GameScore Images
+     * @param height the height of the GameScore Imagesgo
      */
     private void loadAllImages(int width, int height) {
         Image image0 = null;
