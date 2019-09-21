@@ -30,7 +30,7 @@ public class Game {
 
     private static final int PIPE_WIDTH = 100;
     private static final int INITIAL_PIPE_HEIGHT = 500; // must be super long to make sure we cant get appropriate random heights without messing up the image by scaling it
-    private static final int PIPE_RANDOM_HEIGHT_POSITION_BOUND = 300; // rename this isnt actually the max pipe height // this is supposed to be bound
+    private static final int PIPE_RANDOM_HEIGHT_POSITION_BOUND = 300;
     private static final int PIPE_MAX_UPWARDS_BOUND = 200;
     private static final int PIPE_X_VELOCITY = 3;
 
@@ -44,9 +44,11 @@ public class Game {
 
 
     private static final int X_GAP_BETWEEN_PIPES = 250;
-    private static final int PIPE_GAP = 400; // 125
+    private static final int PIPE_GAP = 125;
 
-
+    /**
+     * Game Constructor
+     */
     public Game() {
         initializeGameObjects();
     }
@@ -57,8 +59,8 @@ public class Game {
     private void initializeGameObjects() {
         bird = new Bird(BIRD_WIDTH, BIRD_HEIGHT);
         initializeGameScore();
-        bird.setXLoc(BIRDS_INITIAL_XLOC);
-        bird.setYLoc(BIRDS_INITIAL_YLOC);
+        bird.setYloc(BIRDS_INITIAL_XLOC);
+        bird.setXloc(BIRDS_INITIAL_YLOC);
         ground = new Ground(2 * SCREEN_WIDTH, HEIGHT_OF_GROUND);
         ground.setYLoc(SCREEN_HEIGHT - ground.getGameObjectImage().getHeight(null) / 2);
         gameStarted = false;
@@ -66,6 +68,9 @@ public class Game {
         gameOver = false;
     }
 
+    /**
+     * intializes the GAmeScore with proper width, height and x / y positions.
+     */
     private void initializeGameScore() {
         gameScore2 = new GameScore(WIDTH_OF_GAMESCORE, HEIGHT_OF_GAMESCORE);
         gameScore2.setxPos(X_POSITION_OF_GAMESCORE);
@@ -73,7 +78,6 @@ public class Game {
     }
 
 
-    // EFFECTS: intialize Pipes and set Y / X Coordinates
     /**
      * Initializes Pipes and sets Y / X coordinates
      */
@@ -112,7 +116,6 @@ public class Game {
     }
 
 
-    // EFFECTS: updates the game every Timer refresh rate
     /**
      * Updates game, called every Timer tick
      */
@@ -124,6 +127,7 @@ public class Game {
             updatePipesAndGameScore();
         }
         if (gameOver && gameStarted) {
+
             bird.updateGravityOnBirdsYLocation();
         }
     }
@@ -168,6 +172,11 @@ public class Game {
         }
     }
 
+    /**
+     * A helper function to update gamescore, filters out only one of the pipes and then runs checks to see if it needs to
+     * update game score
+     * @param pipe pipe to check against to update gamescore
+     */
     private void updateGameScoreHelper(Pipe pipe) {
         if (pipe.getOrientation() == true &&
                 pipe.getxLoc() - PIPE_WIDTH / 2 < bird.getxLoc() &&
@@ -176,6 +185,12 @@ public class Game {
         }
     }
 
+
+    /**
+     * Draws bounds (rectanges) around Game Objects and if there is an overlap will call collisionPixelChecker method
+     * to check if there was an actual collision. Important method for gaining more accuracy with collisions
+     * @param pipe pipe to check against for collisions
+     */
     private void checkForCollisions(Pipe pipe) {
         if (gameStarted) {
             Rectangle pipe1 = pipe.getBounds();
@@ -193,17 +208,25 @@ public class Game {
         }
     }
 
-    private void collisionPixelChecker(Pipe pipe, Rectangle interesctRect, Rectangle birdRect, Rectangle pipeRect) {
+    /**
+     * sets a hypothetical rectangle to iterate over checking using a bitwise & to check the transparancy of the
+     * GameObjects sprites. If they are both transparent, there is no collision, else there is a collision
+     * @param pipe pipe to check collisions against,
+     * @param intersectRect intersecting Rectangle to check pixels of
+     * @param birdRect the boundaries of the bird object
+     * @param pipeRect the boundaries of the pipe
+     */
+    private void collisionPixelChecker(Pipe pipe, Rectangle intersectRect, Rectangle birdRect, Rectangle pipeRect) {
         BufferedImage birdImage = bird.toBufferedImage();
         BufferedImage pipeImage = pipe.toBufferedImage();
 
-        int firstI = (int) (interesctRect.getMinX() - birdRect.getMinX());
-        int firstJ = (int) (interesctRect.getMinY() - birdRect.getMinY());
-        int bp1XHelper = (int) (birdRect.getMinX() - pipeRect.getMinX()); //helper variables to use when referring to collision object
+        int firstI = (int) (intersectRect.getMinX() - birdRect.getMinX()); // "x" coordinate to iterate from
+        int firstJ = (int) (intersectRect.getMinY() - birdRect.getMinY()); // "y" coordinate to iterate from
+        int bp1XHelper = (int) (birdRect.getMinX() - pipeRect.getMinX());
         int bp1YHelper = (int) (birdRect.getMinY() - pipeRect.getMinY());
 
-        for (int i = firstI; i < interesctRect.getWidth() + firstI; i++) { //
-            for (int j = firstJ; j < interesctRect.getHeight() + firstJ; j++) {
+        for (int i = firstI; i < intersectRect.getWidth() + firstI; i++) {
+            for (int j = firstJ; j < intersectRect.getHeight() + firstJ; j++) {
                 if ((birdImage.getRGB(i, j) & 0xFF000000) != 0x00
                         && (pipeImage.getRGB(i + bp1XHelper, j + bp1YHelper) & 0xFF000000) != 0x00) {
                     gameOver = true;
@@ -240,10 +263,13 @@ public class Game {
         return pipes;
     }
 
+    /**
+     *
+     * @return private GameScore gameScore2 variable
+     */
     public GameScore getGameScore() {
         return gameScore2;
     }
 
 
-    // TODO might want to think about making a single method to render to GameTopJpanel
 }

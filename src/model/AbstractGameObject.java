@@ -7,34 +7,58 @@ public abstract class AbstractGameObject {
     protected Image gameObjectImage;
     protected int xLoc, yLoc;
 
-    // EFFECTS: returns the xCoord of AbstractGameObject (centered in image)
+    /**
+     * Returns the x location of the GameObject
+     * @return int
+     */
     public int getxLoc() {
         return xLoc - gameObjectImage.getWidth(null) /2 ;
     }
 
-    // EFFECTS: returns the yCoord of AbstrasctGameObject (centered in image)
+    /**
+     * Returns the y location of the GameObject
+     * @return int
+     */
     public int getyLoc() {
         return yLoc - gameObjectImage.getHeight(null) /2 ;
     }
 
-    // EFFECTS: returns the Image of AbstractGameObject
+    /**
+     * Returns the Image of the GameObject
+     * @return Image
+     */
     public Image getGameObjectImage() {
         return gameObjectImage;
     }
 
+    /**
+     * Sets the x location of the given GameObject
+     * @param x the x coordinate of the xloc
+     */
     public void setXloc(int x) {
         xLoc = x;
     }
 
+    /**
+     * Sets the y location of the given GameObject
+     * @param y the y coordinate of the xloc
+     */
     public void setYloc(int y) {
         yLoc = y;
     }
 
+    /**
+     * Returns the Rectangle (or bounds) of the GameObject
+     * @return Rectangle the rectangle of the GameObject
+     */
     public Rectangle getBounds() {
         return new Rectangle(xLoc - gameObjectImage.getWidth(null) /2, yLoc - gameObjectImage.getHeight(null) /2, gameObjectImage.getWidth(null), gameObjectImage.getHeight(null));
     }
 
-
+    /**
+     * Returns the Rectangle (or bounds) of the GameObject
+     * @return Rectangle the rectangle of the GameObject
+     */
     public BufferedImage toBufferedImage()
     {
         // Create a buffered image with transparency

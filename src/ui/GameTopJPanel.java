@@ -68,7 +68,10 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         }
     }
 
-    // we could abstract this all away in one game method called get all Paint components or something
+    /**
+     * Main method which paints everything to the JFrame
+     *
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -76,8 +79,6 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         g2d.drawImage(backGroundImage, 0, 0, getWidth(), getHeight(), null);
         // draw pipes
         handlePipeDrawingForPaintComponent(g2d);
-
-
         //Make a backup so that we can reset our graphics object after using it.
         AffineTransform backup = g2d.getTransform();
         handleBirdRotationForDrawing(g2d);
@@ -85,18 +86,13 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
         g2d.drawImage(game.getBird().getGameObjectImage(), game.getBird().getxLoc(), game.getBird().getyLoc(), null);
         //Reset our graphics object so we can draw with it again.
         g2d.setTransform(backup);
-
         drawPreGamePrompt(g2d);
-
         // must draw this last to make sure pipes dont get warped cuz you cant scale it!
         g2d.drawImage(game.getGround().getGameObjectImage(), game.getGround().getxLoc(), game.getGround().getyLoc(), null);
-
         drawGameScore(g2d);
     }
 
     private void drawGameScore(Graphics2D g2d) {
-        // TODO must implement this
-
         for (int i = 0; i < game.getGameScore().getScoreList().size(); i++) {
             Integer currentScoreInteger = game.getGameScore().getScoreList().get(i);
             if (i == 0) {
@@ -112,6 +108,9 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
 
     }
 
+    /**
+     * Helper method from paintComponent which paints the preGamePromt that only occurs during the begining of each game
+     */
     private void drawPreGamePrompt(Graphics2D g2d) {
         if (game.gameStarted == false) {
             g2d.drawImage(preGameImage,
@@ -158,8 +157,7 @@ public class GameTopJPanel extends JPanel implements ActionListener, KeyListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // invoked by timer every whatever ms
-        // I should probably add a method to update everythings location in the game
+        // invoked by timer every timer count
         game.update();
         repaint(); // I need repaint to call paintComponent method
     }

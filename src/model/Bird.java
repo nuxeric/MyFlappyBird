@@ -7,14 +7,18 @@ import java.io.IOException;
 
 public class Bird extends AbstractGameObject {
     private double yVelocity, angle;
-
-
     private static final double BIRD_GRAVITY = 0.5;
     private static final int BIRD_ANGLE_TO_ADD = 17;
     private static final int BIRD_TILT_ANGLE = -18;
 
 
-    // EFFECTS: scale the gameObject to the given initialWidth, and given initialHeight, intially set at (0,0)
+
+    /**
+     * Bird constructor which sets the width and height of the Bird, scales the Bird to the given width and height.
+     * Initially set at (0,0)
+     * @param width the width of the GameScore
+     * @param height the height of the GameScore
+     */
     public Bird(int width, int height) {
         intializeBirdSprites();
         gameObjectImage = gameObjectImage.getScaledInstance(width,height, Image.SCALE_SMOOTH);
@@ -24,6 +28,9 @@ public class Bird extends AbstractGameObject {
         angle = Math.toRadians(15);
     }
 
+    /**
+     * Intializes Bird sprite Images into the gameObjectImage private member
+     */
     private void intializeBirdSprites() {
         Image image = null;
         try {
@@ -36,13 +43,17 @@ public class Bird extends AbstractGameObject {
 
     }
 
-    // EFFECTS: updates the birds ylocation and yvelocity
+    /**
+     * Updates the birds ylocation and yvelocity
+     */
     public void updateGravityOnBirdsYLocation() {
         yVelocity += BIRD_GRAVITY;
         yLoc += yVelocity;
     }
 
-    // EFFECTS: returns true if bird is falling, false if not
+    /**
+     * Returns true if bird is falling, false if not
+     */
     public boolean falling() {
         if (yVelocity > 0) {
             return true;
@@ -51,7 +62,9 @@ public class Bird extends AbstractGameObject {
         }
     }
 
-    // EFFECTS: updates the bird's yvelocity and ylocation when user presses space
+    /**
+     * "Flaps" the bird and gives it a boost in upwards momentum and updates ylocation
+     */
     public void flap() {
         if (yVelocity > 0) {
             yVelocity = -8;
@@ -62,6 +75,9 @@ public class Bird extends AbstractGameObject {
         yLoc += yVelocity;
     }
 
+    /**
+     * Updates the Bird's angle to rotate "downwards"
+     */
     public void updateRotationAngle() {
         double angleToAdd = Math.toRadians(BIRD_ANGLE_TO_ADD);
         if (falling()) {
@@ -82,21 +98,11 @@ public class Bird extends AbstractGameObject {
 
 
 
-
-    // Getters
-
+    /**
+     * Returns the angle of the Bird
+     */
     public double getAngle() {
         return angle;
-    }
-
-    // setters
-
-    public void setXLoc(int x) {
-        xLoc = x;
-    }
-
-    public void setYLoc(int y) {
-        yLoc = y;
     }
 
 

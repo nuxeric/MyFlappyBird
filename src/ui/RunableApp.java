@@ -5,6 +5,9 @@ import javax.swing.*;
 public class RunableApp {
     public static final int SCREEN_WIDTH = 700, SCREEN_HEIGHT = 700;
 
+    /**
+     * Main method to start FlappyBird (Driver Method)
+     */
     public static void main(String[] args) {
         // sets up the initial jframe
         JFrame frame = new JFrame();
@@ -14,18 +17,10 @@ public class RunableApp {
         frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
-
-
-
-        // adding in the keyboard listener
         frame.addKeyListener(gameTopJPanel);
-
-
-
         // add in the Components to jframe to set up all visuals
         frame.add(gameTopJPanel);
-        frame.setVisible(true); // this fixes the issue I had where I couldnt see anything untill after i resized the window
+        frame.setVisible(true); // this fixes the issue I had where I couldnt see anything until after i resized the window
 
-        // add in KeyBoardListener
     }
 }
