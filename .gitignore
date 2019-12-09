@@ -1,0 +1,5 @@
+#user specific data
+.idea/workspace.xml
+
+#out folder
+out/*
